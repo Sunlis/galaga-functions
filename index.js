@@ -5,5 +5,13 @@
  * @param {!Object} res Cloud Function response context.
  */
 exports.lookup = function(req, res) {
-  res.status(200).send('name was ' + req.query.name);
+  if (!req.query.name) {
+    res.status(400).send(JSON.stringify({
+      error: 'Must provide `name` query param for lookup'
+    }));
+  } else {
+    res.status(200).send(JSON.stringify({
+      message: 'You asked for `' + req.query.name + '`'
+    }));
+  }
 };
