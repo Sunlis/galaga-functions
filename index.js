@@ -38,7 +38,7 @@ var handleLookup = function(req, res, db) {
     return;
   }
   console.log('requested ' + req.query.name);
-  db.query('SELECT * FROM `systems`.`systems` WHERE `name` LIKE ?',
+  db.query('SELECT * FROM `systems`.`systems` WHERE `name` LIKE ? LIMIT 20',
     ['%' + sanitize(req.query.name) + '%'],
     function(error, results, fields) {
       console.log('results: ' + JSON.stringify(results));
