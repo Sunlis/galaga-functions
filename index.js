@@ -49,12 +49,12 @@ var handleLookup = function(req, res, db) {
         }));
       } else if (results) {
         res.send(200).send(JSON.stringify(results.map(function(item) {
-          	var obj = {};
-          	for (var key in item) {
-              obj[key] = item[key];
-            }
-            return obj;
-          })));
+          var obj = {};
+          for (var key in item) {
+            obj[key] = item[key];
+          }
+          return obj;
+        })));
       }
     });
 };
