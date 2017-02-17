@@ -22,10 +22,10 @@ exports.lookup = function(req, res) {
   try {
     handleLookup(req, res, db);
   } catch (e) {
+    console.error(e);
     res.status(500).send(JSON.stringify({
       'error': 'Couldn\'t connect to db'
     }));
-    console.error(e);
   }
   db.end();
 };
@@ -37,17 +37,29 @@ var handleLookup = function(req, res, db) {
     }));
     return;
   }
-  db.query(
-    'SELECT * FROM `systems` WHERE `name` LIKE "%?%"',
-    [req.query.name],
+  console.log('requested ' + req.query.name);
+  db.query('SELECT * FROM `systems`.`systems` WHERE `name` LIKE ?',
+    ['%' + sanitize(req.query.name) + '%'],
     function(error, results, fields) {
+      console.log('results: ' + JSON.stringify(results));
       if (error) {
         console.error(error);
         res.status(500).send(JSON.stringify({
-          'error': 'error querying db'
+          'error': 'error querying db (see logs)'
         }));
       } else if (results) {
-        res.status(200).send(JSON.stringify(results));
+        res.send(200).send(JSON.stringify(results.map(function(item) {
+          	var obj = {};
+          	for (var key in item) {
+              obj[key] = item[key];
+            }
+            return obj;
+          })));
       }
     });
 };
+
+var sanitize = function(txt) {
+  return txt.replace(/[^a-zA-Z0-9\-'\s]/g, '');
+};
+
