@@ -23,9 +23,9 @@ exports.lookup = function(req, res) {
     handleLookup(req, res, db);
   } catch (e) {
     res.status(500).send(JSON.stringify({
-      'error': 'Back end error',
-      'message': e
+      'error': 'Couldn\'t connect to db'
     }));
+    console.error(e);
   }
   db.end();
 };
@@ -42,7 +42,10 @@ var handleLookup = function(req, res, db) {
     [req.query.name],
     function(error, results, fields) {
       if (error) {
-        res.status(500).send(error);
+        console.error(error);
+        res.status(500).send(JSON.stringify({
+          'error': 'error querying db'
+        }));
       } else if (results) {
         res.status(200).send(JSON.stringify(results));
       }
