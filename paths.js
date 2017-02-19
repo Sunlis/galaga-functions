@@ -14,7 +14,7 @@ exports.aStar = function(start, goal, data) {
   var safety = 0;
   while (Object.keys(open).length != 0) {
     safety++;
-    if (safety > 100) {
+    if (safety > 1000) {
       break;
     }
     current = null;
