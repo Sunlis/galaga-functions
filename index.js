@@ -68,22 +68,7 @@ var handlePath = function(req, res, db) {
             end = results[i];
           }
         }
-        findPath(req, res, db, start, end);
-      }
-    });
-};
-
-var findPath = function(req, res, db, start, end) {
-  var padding = 20;
-  var minX = Math.min(start.x, end.x) - padding, maxX = Math.max(start.x, end.x) + padding,
-      minY = Math.min(start.y, end.y) - padding, maxY = Math.max(start.y, end.y) + padding,
-      minZ = Math.min(start.z, end.z) - padding, maxZ = Math.max(start.z, end.z) + padding;
-  db.query(
-    'SELECT * FROM `systems`.`system_detail` WHERE `x` BETWEEN ? AND ? AND  `y` BETWEEN ? AND ? AND  `z` BETWEEN ? AND ?',
-    [minX, maxX, minY, maxY, minZ, maxZ],
-    function(error, results, fields) {
-      if (!checkError(res, error)) {
-        jsonResponse(res, 200, paths.parsePath(paths.aStar(start.id, end.id, results), results));
+        jsonResponse(res, 200, paths.parsePath(paths.aStar(start.id, end.id, db), db));
       }
     });
 };
