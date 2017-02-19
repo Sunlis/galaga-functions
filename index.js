@@ -74,9 +74,10 @@ var handlePath = function(req, res, db) {
 };
 
 var findPath = function(req, res, db, start, end) {
-  var minX = Math.min(start.x, end.x) - 100, maxX = Math.max(start.x, end.x) + 100,
-      minY = Math.min(start.y, end.y) - 100, maxY = Math.max(start.y, end.y) + 100,
-      minZ = Math.min(start.z, end.z) - 100, maxZ = Math.max(start.z, end.z) + 100;
+  var padding = 20;
+  var minX = Math.min(start.x, end.x) - padding, maxX = Math.max(start.x, end.x) + padding,
+      minY = Math.min(start.y, end.y) - padding, maxY = Math.max(start.y, end.y) + padding,
+      minZ = Math.min(start.z, end.z) - padding, maxZ = Math.max(start.z, end.z) + padding;
   db.query(
     'SELECT * FROM `systems`.`system_detail` WHERE `x` BETWEEN ? AND ? AND  `y` BETWEEN ? AND ? AND  `z` BETWEEN ? AND ?',
     [minX, maxX, minY, maxY, minZ, maxZ],
