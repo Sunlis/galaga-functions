@@ -7,7 +7,7 @@ exports.aStar = function(start, goal, data) {
   var gScore = {};
   gScore[start] = 0;
   var fScore = {};
-  fScore[start] = heuristic(start, goal);
+  fScore[start] = heuristic(start, goal, data);
 
   var current;
 
@@ -39,7 +39,7 @@ exports.aStar = function(start, goal, data) {
       }
       from[neighbour.id] = current;
       gScore[neighbour.id] = tempScore;
-      fScore[neighbour.id] = gScore[neighbour.id] + heuristic(neighbour.id, goal);
+      fScore[neighbour.id] = gScore[neighbour.id] + heuristic(neighbour.id, goal, data);
     }
   }
 
