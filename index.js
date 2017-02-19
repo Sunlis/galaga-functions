@@ -22,9 +22,9 @@ exports.lookup = function(req, res) {
   try {
     handleLookup(req, res, db);
   } catch (e) {
-    console.error(e);
+    console.error(JSON.stringify(e));
     res.status(500).send(JSON.stringify({
-      'error': 'Couldn\'t connect to db'
+      'error': '/shrug'
     }));
   }
   db.end();
@@ -47,14 +47,15 @@ var handleLookup = function(req, res, db) {
         res.status(500).send(JSON.stringify({
           'error': 'error querying db (see logs)'
         }));
-      } else if (results) {
-        res.send(200).send(JSON.stringify(results.map(function(item) {
+      } else {
+        var mapped = results.map(function(item) {
           var obj = {};
           for (var key in item) {
             obj[key] = item[key];
           }
           return obj;
-        })));
+        });
+        res.status(200).send(JSON.stringify(mapped));
       }
     });
 };
@@ -62,4 +63,3 @@ var handleLookup = function(req, res, db) {
 var sanitize = function(txt) {
   return txt.replace(/[^a-zA-Z0-9\-'\s]/g, '');
 };
-
