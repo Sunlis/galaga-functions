@@ -83,7 +83,7 @@ var findPath = function(req, res, db, start, end) {
     [minX, maxX, minY, maxY, minZ, maxZ],
     function(error, results, fields) {
       if (!checkError(res, error)) {
-        jsonResponse(res, 200, paths.parsePath(paths.aStar(start.id, end.id, results)));
+        jsonResponse(res, 200, paths.parsePath(paths.aStar(start.id, end.id, results), results));
       }
     });
 };
