@@ -128,7 +128,7 @@ var checkParams = function(req, res, props) {
       missing.push(props[i]);
     }
   }
-  if (missing) {
+  if (missing.length) {
     jsonResponse(res, 400, {
       'error': 'Missing required query param(s): ' + missing.join(', ')
     });
