@@ -41,6 +41,8 @@ exports.aStar = function(start, goal, data) {
       gScore[neighbour.id] = tempScore;
       fScore[neighbour.id] = gScore[neighbour.id] + heuristic(neighbour.id, goal, data);
     }
+    
+    if (current == goal) break;
   }
 
   var path = [current];
