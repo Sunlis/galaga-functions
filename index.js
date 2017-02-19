@@ -55,6 +55,7 @@ var handleDetail = function(req, res, db) {
         }));
       } else {
         res.status(200).send(JSON.stringify(results));
+      }
     });
 };
 
