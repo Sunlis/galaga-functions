@@ -47,7 +47,7 @@ exports.path = function(req, res) {
       'error': '/shrug'
     });
   }
-  db.end();
+  //db.end();
 };
 
 var handlePath = function(req, res, db) {
@@ -73,9 +73,9 @@ var handlePath = function(req, res, db) {
 };
 
 var findPath = function(req, res, db, start, end) {
-  var minX = Math.min(start.x, end.x), maxX = Math.max(start.x, end.x),
-      minY = Math.min(start.y, end.y), maxY = Math.max(start.y, end.y),
-      minZ = Math.min(start.z, end.z), maxZ = Math.max(start.z, end.z);
+  var minX = Math.min(start.x, end.x) - 100, maxX = Math.max(start.x, end.x) + 100,
+      minY = Math.min(start.y, end.y) - 100, maxY = Math.max(start.y, end.y) + 100,
+      minZ = Math.min(start.z, end.z) - 100, maxZ = Math.max(start.z, end.z) + 100;
   db.query(
     'SELECT * FROM `systems`.`system_detail` WHERE `x` BETWEEN ? AND ? AND  `y` BETWEEN ? AND ? AND  `z` BETWEEN ? AND ?',
     [minX, maxX, minY, maxY, minZ, maxZ],
