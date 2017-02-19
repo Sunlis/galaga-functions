@@ -11,12 +11,6 @@ var connect = function(db) {
   return connection;
 };
 
-/**
- * Responds to any HTTP request that can provide a "message" field in the body.
- *
- * @param {!Object} req Cloud Function request context.
- * @param {!Object} res Cloud Function response context.
- */
 exports.lookup = function(req, res) {
   var db = connect('systems');
   try {
@@ -30,10 +24,44 @@ exports.lookup = function(req, res) {
   db.end();
 };
 
+exports.detail = function(req, res) {
+  var db = connect('systems');
+  try {
+    handleDetail(req, res, db);
+  } catch (e) {
+    console.error(JSON.stringify(e));
+    res.status(500).send(JSON.stringify({
+      'error': '/shrug'
+    }));
+  }
+  db.end();
+};
+
+var handleDetail = function(req, res, db) {
+  if (!req.query.id) {
+    res.status(400).send(JSON.stringify({
+      'error': 'Must provide `id` query param for detail'
+    }));
+    return;
+  }
+  db.query(
+    'SELECT * FROM `systems`.`system_detail` WHERE `id`=?',
+    [sanitize(req.query.id)],
+    function(error, results, fields) {
+      if (error) {
+        console.error(error);
+        res.status(500).send(JSON.stringify({
+          'error': 'error querying db (see logs)'
+        }));
+      } else {
+        res.status(200).send(JSON.stringify(results));
+    });
+};
+
 var handleLookup = function(req, res, db) {
   if (!req.query.name) {
     res.status(400).send(JSON.stringify({
-      error: 'Must provide `name` query param for lookup'
+      'error': 'Must provide `name` query param for lookup'
     }));
     return;
   }
